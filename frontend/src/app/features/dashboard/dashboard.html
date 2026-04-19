@@ -1,0 +1,43 @@
+<div class="dashboard-container">
+  <h2>Análise de Xadrez</h2>
+  
+  <div class="search-box">
+    <input 
+      type="text" 
+      [(ngModel)]="username" 
+      placeholder="Digite o usuário do Chess.com"
+      (keyup.enter)="buscarDados()">
+    
+    <button (click)="buscarDados()" [disabled]="isLoading">
+      {{ isLoading ? 'Buscando...' : 'Analisar' }}
+    </button>
+  </div>
+
+  <p class="error" *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+
+  <div class="results" *ngIf="dashboardData">
+    <div class="stats-cards" style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+      <div class="card" style="padding: 15px; border: 1px solid #ccc; border-radius: 8px;">
+        <h3>Rating Atual</h3>
+        <p style="font-size: 24px; font-weight: bold; margin: 0;">{{ dashboardData.currentRating }}</p>
+      </div>
+      <div class="card" style="padding: 15px; border: 1px solid #ccc; border-radius: 8px;">
+        <h3>Pontos para Meta ({{ dashboardData.targetRating }})</h3>
+        <p style="font-size: 24px; font-weight: bold; margin: 0;">{{ dashboardData.pointsToGoal }}</p>
+      </div>
+    </div>
+
+    <div class="chart-container" style="width: 300px; margin: 30px auto;">
+      <canvas baseChart
+        [labels]="pieChartLabels"
+        [datasets]="pieChartDatasets"
+        [options]="pieChartOptions"
+        [legend]="true"
+        type="doughnut">
+      </canvas>
+      <p style="text-align: center; font-size: 18px; margin-top: 15px;">
+        Taxa de Vitória: <strong>{{ dashboardData.winRatePercentage }}%</strong>
+      </p>
+    </div>
+  </div>
+</div>
